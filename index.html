@@ -1,325 +1,645 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cyber Terminal</title>
+
+
 
 <style>
 
+
+
 *{
+
 margin:0;
+
 padding:0;
+
 box-sizing:border-box;
+
 font-family:Consolas,monospace;
+
 }
+
+
 
 body{
+
 background:black;
+
 overflow:hidden;
+
 color:#00ff88;
+
 }
 
+
+
 canvas{
+
 position:fixed;
+
 top:0;
+
 left:0;
+
 width:100%;
+
 height:100%;
+
 z-index:-1;
+
 }
+
+
 
 #terminal{
 
+
+
 position:absolute;
+
 top:50%;
+
 left:50%;
+
 transform:translate(-50%,-50%);
 
+
+
 width:90%;
+
 max-width:850px;
+
+
 
 background:rgba(0,0,0,.78);
 
+
+
 border:2px solid #00ff88;
+
+
 
 padding:25px;
 
+
+
 box-shadow:0 0 25px #00ff88;
+
+
 
 border-radius:10px;
 
+
+
 }
+
+
 
 #output{
 
+
+
 white-space:pre-wrap;
+
+
 
 font-size:18px;
 
+
+
 line-height:1.6;
 
+
+
 }
+
+
 
 .cursor{
 
+
+
 display:inline-block;
+
+
 
 width:12px;
 
+
+
 height:22px;
 
+
+
 background:#00ff88;
+
+
 
 animation:blink .8s infinite;
 
+
+
 }
+
+
 
 @keyframes blink{
 
+
+
 50%{
+
 opacity:0;
-}
 
 }
+
+
+
+}
+
+
 
 .progress{
 
+
+
 width:100%;
+
+
 
 height:22px;
 
+
+
 border:1px solid #00ff88;
+
+
 
 margin-top:20px;
 
+
+
 display:none;
 
+
+
 }
+
+
 
 .bar{
 
+
+
 height:100%;
+
+
 
 width:0%;
 
+
+
 background:#00ff88;
 
+
+
 }
+
+
 
 #birthday{
 
+
+
 display:none;
+
+
 
 text-align:center;
 
+
+
 margin-top:40px;
+
+
 
 animation:glow 1s infinite alternate;
 
+
+
 }
+
+
 
 #birthday h1{
 
+
+
 font-size:50px;
+
+
 
 color:#00ff88;
 
+
+
 }
+
+
 
 #birthday h2{
 
+
+
 margin-top:20px;
+
+
 
 font-size:34px;
 
+
+
 }
+
+
 
 #birthday p{
 
+
+
 margin-top:20px;
+
+
 
 font-size:24px;
 
+
+
 }
+
+
 
 @keyframes glow{
 
+
+
 from{
+
 text-shadow:0 0 8px #00ff88;
+
 }
+
+
 
 to{
+
 text-shadow:0 0 35px #00ff88;
-}
 
 }
+
+
+
+}
+
+
 
 </style>
 
+
+
 </head>
+
+
 
 <body>
 
+
+
 <canvas id="matrix"></canvas>
+
+
 
 <div id="terminal">
 
+
+
 <pre id="output"></pre>
 
+
+
 <div class="progress">
+
 <div class="bar"></div>
+
 </div>
+
+
 
 <div id="birthday">
 
+
+
 <h1> ACCESS GRANTED </h1>
+
+
 
 <h2>Happy Birthday Vedd &#x1F60C;&#x1F90D; </h2>
 
+
+
 <p>Welcome to Level 20</p>
 
-<p>Mission Completed Successfully.</p>
 
-<p>nee chirikanda nalla parayam ind ipo + (1yr closer to death)</p>
+
+<p>nee chirikanda. nalla parayam ind ipo</p>
+<p>+</p>
+<p>1 year closer to death</p>
+
 
 <p>heee...he...</p>
 
-</div>
+
 
 </div>
+
+
+
+</div>
+
+
 
 <audio id="music" autoplay loop>
+
 <source src="music.mp3" type="audio/mpeg">
+
 </audio>
+
+
 
 <script>
 
+
+
 /* Matrix Rain */
 
+
+
 const canvas=document.getElementById("matrix");
+
 const ctx=canvas.getContext("2d");
 
+
+
 canvas.width=window.innerWidth;
+
 canvas.height=window.innerHeight;
+
+
 
 const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
 
+
+
 const font=16;
+
+
 
 const columns=canvas.width/font;
 
+
+
 const drops=[];
+
+
 
 for(let i=0;i<columns;i++) drops[i]=1;
 
+
+
 function draw(){
 
+
+
 ctx.fillStyle="rgba(0,0,0,.05)";
+
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
+
+
 ctx.fillStyle="#00ff88";
+
 ctx.font=font+"px monospace";
+
+
 
 for(let i=0;i<drops.length;i++){
 
+
+
 const text=chars[Math.floor(Math.random()*chars.length)];
+
+
 
 ctx.fillText(text,i*font,drops[i]*font);
 
+
+
 if(drops[i]*font>canvas.height&&Math.random()>0.975)
+
 drops[i]=0;
+
+
 
 drops[i]++;
 
-}
+
 
 }
+
+
+
+}
+
+
 
 setInterval(draw,35);
+
 // Hacker Terminal Animation
 
+
+
 const output = document.getElementById("output");
+
 const progress = document.querySelector(".progress");
+
 const bar = document.querySelector(".bar");
+
 const birthday = document.getElementById("birthday");
 
+
+
 const lines = [
+
 "> Initializing Cyber Core...",
+
 "> Connecting Secure Server...",
+
 "> Encrypting Connection...",
+
 "> Bypassing Firewall...",
+
 "> Access Granted ✔",
+
 "",
+
 "> Target Found",
+
 "> Name : VEDA",
-"> Age  : 20 (mm.. vayasayi..) ",
+
+"> Age  : 20. mm.. vayasayi.. ",
+
 "",
-"> Decrypting Birthday Message..."
+
+"> Decrypting Birthday Message... [ just tap anywhere]"
+
 ];
+
+
 
 let i = 0;
 
+
+
 function typeLine() {
+
+
 
     if(i < lines.length){
 
+
+
         output.innerHTML += lines[i] + "\n";
+
+
 
         i++;
 
+
+
         setTimeout(typeLine,700);
+
+
 
     }else{
 
+
+
         loadBar();
+
+
 
     }
 
+
+
 }
+
+
 
 typeLine();
 
+
+
 function loadBar(){
+
+
 
     progress.style.display="block";
 
+
+
     let width=0;
+
+
 
     const timer=setInterval(()=>{
 
+
+
         width++;
+
+
 
         bar.style.width=width+"%";
 
+
+
         if(width>=100){
+
+
 
             clearInterval(timer);
 
+
+
             setTimeout(showBirthday,800);
+
+
 
         }
 
+
+
     },40);
 
+
+
 }
+
+
 
 function showBirthday(){
 
+
+
     document.getElementById("output").style.display="none";
+
+
 
     progress.style.display="none";
 
+
+
     birthday.style.display="block";
 
+
+
 }
+
 const music = document.getElementById("music");
 
+
+
 document.body.addEventListener("click", () => {
+
     music.play().catch(err => console.log(err));
+
 }, { once: true });
+
+
 
 </script>
 
 </body>
 </html>
+
+
